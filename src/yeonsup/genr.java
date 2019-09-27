@@ -1,4 +1,4 @@
-package SimpArc;
+package yeonsup;
 import simView.*;
 import genDevs.modeling.*;
 import GenCol.*;

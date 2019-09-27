@@ -1,4 +1,4 @@
-package SimpArc;
+package Lab3;
 import simView.*;
 import genDevs.modeling.*;
 import GenCol.*;
