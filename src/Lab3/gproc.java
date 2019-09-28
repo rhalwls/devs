@@ -9,8 +9,8 @@ public class gproc extends ViewableDigraph
 	{
 		super("gproc");
     	
-		ViewableAtomic g = new genr("g", 10);
-		ViewableAtomic p = new proc("p", 10);
+		ViewableAtomic g = new genr("g", 20);
+		ViewableAtomic p = new proc("p", 45);
 		//ViewableAtomic t = new transd("t", 70);
     	
 		add(g);
@@ -35,7 +35,7 @@ public class gproc extends ViewableDigraph
     public void layoutForSimView()
     {
         preferredSize = new Dimension(988, 646);
-        ((ViewableComponent)withName("g")).setPreferredLocation(new Point(322, 98));
-        ((ViewableComponent)withName("p")).setPreferredLocation(new Point(652, 339));
+        ((ViewableComponent)withName("g")).setPreferredLocation(new Point(63, 279));
+        ((ViewableComponent)withName("p")).setPreferredLocation(new Point(641, 36));
     }
 }

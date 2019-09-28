@@ -11,7 +11,8 @@ public class proc extends ViewableAtomic
 
 	public proc()
 	{
-		this("proc", 20);
+		//this("proc", 20);
+		this("proc",45);
 	}
 
 	public proc(String name, double Processing_time)
