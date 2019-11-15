@@ -1,4 +1,4 @@
-package SimpArc;
+package copylab4;
 import simView.*;
 import genDevs.modeling.*;
 import GenCol.*;
@@ -53,9 +53,6 @@ public class genr extends ViewableAtomic
 			count = count + 1;
 			
 			holdIn("active", int_arr_time);
-			if(count > 5) {
-				holdIn("stop",INFINITY);
-			}
 		}
 	}
 

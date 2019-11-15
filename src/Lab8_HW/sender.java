@@ -1,20 +1,20 @@
-package SimpArc;
+package Lab8_HW;
 import simView.*;
 import genDevs.modeling.*;
 import GenCol.*;
 
-public class genr extends ViewableAtomic
+public class sender extends ViewableAtomic
 {
 	
 	protected double int_arr_time;
 	protected int count;
-  
-	public genr() 
+	private int cnt_packet;
+	public sender() 
 	{
-		this("genr", 30);
+		this("sender", 30);
 	}
   
-	public genr(String name, double Int_arr_time)
+	public sender(String name, double Int_arr_time)
 	{
 		super(name);
    
@@ -27,6 +27,7 @@ public class genr extends ViewableAtomic
 	public void initialize()
 	{
 		count = 1;
+		cnt_packet = 0;
 		
 		holdIn("active", int_arr_time);
 	}
@@ -34,13 +35,13 @@ public class genr extends ViewableAtomic
 	public void deltext(double e, message x)
 	{
 		Continue(e);
-		if (phaseIs("active"))
+		if (phaseIs("wait"))
 		{
 			for (int i = 0; i < x.getLength(); i++)
 			{
 				if (messageOnPort(x, "in", i))
 				{
-					//holdIn("stop", INFINITY);
+					holdIn("active", int_arr_time);
 				}
 			}
 		}
@@ -51,10 +52,14 @@ public class genr extends ViewableAtomic
 		if (phaseIs("active"))
 		{
 			count = count + 1;
+			cnt_packet++;
+			
 			
 			holdIn("active", int_arr_time);
-			if(count > 5) {
-				holdIn("stop",INFINITY);
+			if(cnt_packet== 5) {
+				count=1;
+				cnt_packet = 0;
+				holdIn("wait",INFINITY);
 			}
 		}
 	}
@@ -62,7 +67,11 @@ public class genr extends ViewableAtomic
 	public message out()
 	{
 		message m = new message();
-		m.add(makeContent("out", new entity("job" + count)));
+		if(phaseIs("active")) {
+			if(cnt_packet<5) {
+				m.add(makeContent("out",new packet("packet"+count,(int)(Math.random()*5)+1)));
+			}
+		}
 		return m;
 	}
   
