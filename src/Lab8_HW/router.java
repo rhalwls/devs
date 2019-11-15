@@ -10,6 +10,7 @@ public class router extends ViewableAtomic
 	protected entity job;
 	protected double processing_time;
 	protected packet packet_msg;
+	boolean ready_shoot = false;
 	public router()
 	{
 		this("router", 20);
@@ -38,20 +39,21 @@ public class router extends ViewableAtomic
 
 	public void deltext(double e, message x)
 	{
+		System.out.println("external has called");
 		Continue(e);
 		if (phaseIs("passive"))
 		{
+		
 			for (int i = 0; i < x.size(); i++)
 			{
 				if (messageOnPort(x, "in", i))
 				{
-					
 					packet_msg = (packet) x.getValOnPort("in", i);
 					q.add(packet_msg);
 					System.out.println("current queue size of router is "+q.size());
-					if(q.size()==5) {
-						
-						holdIn("sending", processing_time);
+					if(q.size()== 5) {
+						holdIn("passive",0);
+						//holdIn("sending",10);
 					}
 				}
 			}
@@ -60,22 +62,30 @@ public class router extends ViewableAtomic
 	
 	public void deltint()
 	{
+		System.out.println("internal has called");
+		
+		if(q.size() ==5) {
+			//holdIn("passive",10);
+			holdIn("sending",10);
+		}
+		
+		
 		if (phaseIs("sending"))
 		{
-			if (!q.isEmpty())
-			{
-				
+			if (!q.isEmpty()) {
 				holdIn("sending",processing_time);
-				
 			}
-			
 		}
+		
 	}
 
 	public message out()
 	{
+		System.out.println("out has called");
 		message m = new message();
-		
+		if(phaseIs("passive")&&q.size()==5) {
+			holdIn("sending",10);
+		}
 		if (phaseIs("sending"))
 		{
 			if(!q.isEmpty()) {
@@ -84,7 +94,6 @@ public class router extends ViewableAtomic
 				packet_msg = (packet)q.removeFirst();
 				m.add(makeContent("out"+portNum,packet_msg));
 			}
-		
 			else {
 				System.out.println("out에서 빠져나가기직전");
 				m.add(makeContent("out",new packet("done",0)));
